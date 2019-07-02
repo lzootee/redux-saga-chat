@@ -1,5 +1,4 @@
 import * as types from './constants'
-import * as socket_types from '../socket/constants';
 
 /**
  * Sign in.
@@ -29,7 +28,7 @@ export const logout = () => {
 
 export const socket = (token) => {
   return {
-    type: socket_types.CONNECT_SOCKET,
+    type: types.CONNECT_SOCKET,
     payload: {
       token: token
     }
@@ -40,7 +39,7 @@ export const getFriends = (socket) => {
   return {
     type: types.GET_LIST_FRIENDS,
     payload: {
-      socket: socket.socket
+      socket: socket
     }
   }
 }

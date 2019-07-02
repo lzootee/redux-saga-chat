@@ -1,13 +1,14 @@
 import {Alert} from 'react-native';
 import { handleActions } from 'redux-actions'
-import { LOGIN, LOGOUT, LOGIN_SUCCESS, LOGIN_FAILED, LIST_FRIENDS } from './constants'
+import { LOGIN, LOGOUT, LOGIN_SUCCESS, LOGIN_FAILED, LIST_FRIENDS, CONNECT_SOCKET_SUCESS } from './constants'
 
 export type UserState = {
   loggedIn: boolean,
   fullName: string,
   token: string,
   email: string,
-  friends: []
+  friends: [],
+  socket: Object
 }
 
 const initialState: UserState = {
@@ -15,7 +16,8 @@ const initialState: UserState = {
   fullName: '',
   token: '',
   email: '',
-  friends: []
+  friends: [],
+  socket: Object
 }
 
 export default handleActions(
@@ -38,11 +40,17 @@ export default handleActions(
       );
       return {}
     },
-    [LIST_FRIENDS]: (state: UserState = initialState, action): UserState => {
-      console.log(action);
+    [CONNECT_SOCKET_SUCESS]: (state: UserState = initialState, action): UserState => {
+      console.log('CONNECT SOCKET SUCCESS', state);
       return {
-        
+        loggedIn: state.loggedIn,
+        token: state.token,
+        socket: action.socket
       }
+    },
+    [LIST_FRIENDS]: (state: UserState = initialState, action): UserState => {
+      console.log('GET LIST FRIEND');
+      return initialState
     },
     [LOGOUT]: (): UserState => {
       return {

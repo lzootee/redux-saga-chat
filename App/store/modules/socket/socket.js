@@ -1,9 +1,11 @@
 import io from 'socket.io-client';
-import * as types from './constants'
 import * as user_types from '../user/constants'
 
-const init = (token) => {
-  let socket = io('http://localhost:3000', {
+
+var socket;
+
+const Socket = function (token) {
+  socket = io('http://localhost:3000', {
     query: { token: token },
     forceNew: true,
     jsonp: false,
@@ -12,22 +14,15 @@ const init = (token) => {
     reconnectionAttempts: 100000,
     transports: ['websocket']
   });
-
-  socket.on('list-friends', (list) => {
+  
+  socket.on('list-friends', function (list) {
     console.log(list);
   });
 
   return socket;
 }
 
-const Socket = {
-  connect: (token) => {
-    return init(token);
-  },
-  getFriends: (socket) => {
-    socket.emit('list-friends');
-    return true;
-  }
+export const getFriends = function (socket) {
+  socket.emit("list-friends");
 }
-
 export default Socket;

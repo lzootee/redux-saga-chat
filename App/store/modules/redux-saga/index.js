@@ -1,9 +1,7 @@
 import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import Api from './Api';
-import socketIO from '../socket/socket';
 import * as types from '../user/constants';
-import * as socket_types from '../socket/constants';
-
+import Socket, {getFriends} from '../socket/socket';
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* fetchUser(action) {
@@ -21,7 +19,7 @@ function* fetchUser(action) {
 */
 function* mySaga() {
     yield takeEvery(types.LOGIN, fetchUser);
-    yield takeEvery(socket_types.CONNECT_SOCKET, connectSocket);
+    yield takeEvery(types.CONNECT_SOCKET, connectSocket);
     yield takeEvery(types.GET_LIST_FRIENDS, getListFriends);
 }
 
@@ -29,18 +27,18 @@ function* mySaga() {
 // Connect Socket
 function* connectSocket(action) {
   try {
-    const socket = yield call(socketIO.connect, action.payload.token);
-    console.log(socket);
-    yield put({ type: socket_types.SOCKET_CONNECTED, socket: socket });
+    const socket = yield call(Socket, action.payload.token);
+    yield put({ type: types.CONNECT_SOCKET_SUCESS, socket: socket });
   } catch (e) {
     console.log(e);
     yield put({ type: types.LOGIN_FAILED, message: e });
   }
 }
 
+
 function* getListFriends(action) {
   try {
-    yield call(socketIO.getFriends, action.payload.socket);
+    yield call(getFriends, action.payload.socket);
   } catch (e) {
     yield put({ type: types.LOGIN_FAILED, message: e });
   }

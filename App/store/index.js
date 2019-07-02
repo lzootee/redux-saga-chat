@@ -23,6 +23,7 @@ const middleware = applyMiddleware(sagaMiddleware)
 const createStore = (data: Object = {}) => {
   return _createStore(combineReducers(reducers), data, middleware)
 }
+
 const store = createStore()
 sagaMiddleware.run(mySaga)
 

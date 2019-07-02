@@ -15,8 +15,7 @@ import { Button } from '../components'
 class App extends Component {
 
   render() {
-    const { doLogout, connectSocket, getListFriends, loggedIn, fullName, token, socket } = this.props
-    console.log(socket);
+    const { doLogout, connectSocket, getListFriends, loggedIn, fullName, token } = this.props
 		// Display login screen when user is not logged in
     if (!loggedIn) {
       return (
@@ -40,7 +39,7 @@ class App extends Component {
         </Button>
         <Button
           onPress={() => {
-            getListFriends(socket)
+            getListFriends()
           }}
         >
           Get Friend
@@ -57,13 +56,12 @@ export const Main = connect(
     loggedIn: state.user.loggedIn,
     fullName: state.user.fullName,
     token: state.user.token,
-    email: state.user.email,
-    socket: state.socket
+    email: state.user.email
 	}),
 	
   dispatch => ({
     doLogout: () => dispatch(actions.user.logout()),
     connectSocket: (token) => dispatch(actions.user.socket(token)),
-    getListFriends: (socket) => dispatch(actions.user.getFriends(socket))
+    getListFriends: () => dispatch(actions.user.getFriends())
   })
 )(App)

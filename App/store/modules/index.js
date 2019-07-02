@@ -1,14 +1,12 @@
 import { UserState, user } from './user'
 import { AppState, app } from './app'
-import { SocketState, socket } from './socket'
 
 /**
  * Root states.
  */
 export type States = {
   app: AppState,
-  user: UserState,
-  socket: SocketState
+  user: UserState
 }
 
 /**
@@ -16,8 +14,7 @@ export type States = {
  */
 export const reducers = {
   app: app.reducer,
-  user: user.reducer,
-  socket: socket.reducer
+  user: user.reducer
 }
 
 /**
